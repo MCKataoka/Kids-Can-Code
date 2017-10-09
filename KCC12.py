@@ -242,14 +242,14 @@ class Bullet(pygame.sprite.Sprite):
 			self.kill()
 
 # New Stuff 7
-class Explostion(pygame.sprite.Sprite):
+class Explosion(pygame.sprite.Sprite):
 	def __init__(self, center, size):
 		pygame.sprite.Sprite.__init__(self)
 		self.size = size
 		self.image = explosion_anim[self.size][0]
 		self.rect = self.image.get_rect()
 		self.rect.center = center
-		self.frame. = 0
+		self.frame = 0
 		self.last_update = pygame.time.get_ticks()
 		self.frame_rate = 50
 
@@ -258,7 +258,7 @@ class Explostion(pygame.sprite.Sprite):
 		if now - self.last_update > self.frame_rate:
 			self.last_update = now
 			self.frame +=  1
-			if self.frame == len(explosion_anim[self.size])
+			if self.frame == len(explosion_anim[self.size]):
 				self.kill()
 			else:
 				center = self.rect.center
