@@ -60,13 +60,13 @@ def draw_text(surf, text, size, x, y):
 	text_rect = text_surface.get_rect()
 	text_rect.midtop = (x,y)
 	surf.blit(text_surface, text_rect)
-# NEW STUFF 3
+
 def newmob():
 
 	m = Mob()
 	all_sprites.add(m)
 	mobs.add(m)
-# NEW STUFF 4
+
 def draw_shield_bar(surf, x,y,pct):
 	#Prevents the bar to go into the negatives
 	if pct < 0:
@@ -97,8 +97,11 @@ class Player(pygame.sprite.Sprite):
 		self.rect.centerx = width/2
 		self.rect.bottom = height - 10
 		self.speedx = 0
-		# NEW STUFF 1 (Adding a shield variable, going from 0 to 100%)
 		self.shield = 100
+		# New Stuff 1
+		# We are adding an autoshoot function. So we dont constantly have to press the space bar
+		self.shoot_delay = 250
+		self.last_shot = pygame.time.get_ticks()
 
 	def update(self):
 		self.speedx = 0
@@ -108,7 +111,10 @@ class Player(pygame.sprite.Sprite):
 			self.speedx = -5
 		if keystate[pygame.K_RIGHT]:
 			self.speedx = 5
-		
+		# New Stuff 2
+		if keystate[pygame.K_SPACE]:
+			self.shoot()
+
 		self.rect.x += self.speedx 
 
 		if self.rect.right > width:
@@ -118,10 +124,15 @@ class Player(pygame.sprite.Sprite):
 
 			
 	def shoot(self):
-		bullet = Bullet(self.rect.centerx, self.rect.top)
-		all_sprites.add(bullet)
-		bullets.add(bullet)
-		shoot_sound.play()
+		# New Stuff 3
+		now = pygame.time.get_ticks()
+		if now - self.last_shot > self.shoot_delay:
+			self.last_shot = now
+		# New Stuff 4 Indent this stuff so it lines up
+			bullet = Bullet(self.rect.centerx, self.rect.top)
+			all_sprites.add(bullet)
+			bullets.add(bullet)
+			shoot_sound.play()
 
 
 
@@ -230,6 +241,30 @@ class Bullet(pygame.sprite.Sprite):
 		if self.rect.bottom < 0:
 			self.kill()
 
+# New Stuff 7
+class Explostion(pygame.sprite.Sprite):
+	def __init__(self, center, size):
+		pygame.sprite.Sprite.__init__(self)
+		self.size = size
+		self.image = explosion_anim[self.size][0]
+		self.rect = self.image.get_rect()
+		self.rect.center = center
+		self.frame. = 0
+		self.last_update = pygame.time.get_ticks()
+		self.frame_rate = 50
+
+	def update(self):
+		now = pygame.time.get_ticks()
+		if now - self.last_update > self.frame_rate:
+			self.last_update = now
+			self.frame +=  1
+			if self.frame == len(explosion_anim[self.size])
+				self.kill()
+			else:
+				center = self.rect.center
+				self.image = explosion_anim[self.size][self.frame]
+				self.rect = self.image.get_rect()
+				self.rect.center = center
 
 # Load all game graphics
 
@@ -253,8 +288,20 @@ meteor_list = ['meteorGrey_big1.png', 'meteorGrey_big2.png', 'meteorGrey_big3.pn
 for img in meteor_list:
 	meteor_images.append(pygame.image.load(path.join(img_dir,img)).convert())
 
-# Load all the game sounds
+# New Stuff 6
 
+explosion_anim = {}
+explosion_anim['lg'] = []
+explosion_anim['sm'] = []
+for i in range(9):
+	filename = 'regularExplosion0{}.png'.format(i)
+	img = pygame.image.load(path.join(img_dir, filename)).convert()
+	img.set_colorkey(Black)
+	img_lg = pygame.transform.scale(img, (75,75))
+	explosion_anim['lg'].append(img_lg)
+	img_sm = pygame.transform.scale(img, (32,32))
+	explosion_anim['sm'].append(img_sm)
+# Load all the game sounds
 
 shoot_sound = pygame.mixer.Sound(path.join(snd_dir,'Laser_Shoot6.wav'))
 
@@ -279,7 +326,7 @@ player = Player()
 all_sprites.add(player)
 
 for i in range(8):
-	#NEW STUFF 3 
+	
 	newmob()
 
 score = 0
@@ -298,10 +345,10 @@ while running:
 
 		if event.type == pygame.QUIT:
 			running = False
-		
-		elif event.type == pygame.KEYDOWN:
-			if event.key == pygame.K_SPACE:
-				player.shoot()
+		# New Stuff 5 Delete this stuff out
+		# elif event.type == pygame.KEYDOWN:
+		# 	if event.key == pygame.K_SPACE:
+		# 		player.shoot()
 
 
 	# Update
@@ -315,17 +362,22 @@ while running:
 		
 		score += 50 - hit.radius
 		random.choice(explosion_sounds).play()
-		# NEW STUFF 3
+		# New Stuff 8 Make sure to try after this
+		expl = Explosion(hit.rect.center, 'lg')
+		all_sprites.add(expl)
 		newmob()
 
 
-	# NEW STUFF 2 (Change it so now when you get hit with the mob you will actually stay alive
-		# and you will only die till the shield has gone away)
+	#Change it so now when you get hit with the mob you will actually stay alive
+		# and you will only die till the shield has gone away
 	# check to see if a mob hit the player
 	hits = pygame.sprite.spritecollide(player, mobs, True, pygame.sprite.collide_circle)
 		#if statement hits is false if it is empty
 	for hit in hits:
 		player.shield -= hit.radius * 2
+		# New Stuff 9
+		expl = Explosion(hit.rect.center, 'sm')
+		all_sprites.add(expl)
 		# we need to spawn a new mob to replace it now that the game doesnt end.
 		newmob()
 		if player.shield <= 0:
@@ -339,8 +391,7 @@ while running:
 
 	
 	draw_text(screen, str(score), 18, width/2, 10)
-	#NEW STUFF 4
-	# takes an x and y and number percent value
+	
 	draw_shield_bar(screen, 5,5,player.shield)
 	# *after* drawing everything, flip the display
 	pygame.display.flip()
