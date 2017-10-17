@@ -346,7 +346,7 @@ for sd in explosions:
 	explosion_sounds.append(pygame.mixer.Sound(path.join(snd_dir,sd)))
 
 # New Stuff 14
-player_die_sound = pygame.mixer.Sound(path.join(snd_dir, 'rumble1.ogg'))
+#player_die_sound = pygame.mixer.Sound(path.join(snd_dir, 'rumble1.ogg'))
 
 
 # pygame.mixer.music.load(path.join(snd_dir,'tgfcoder-FrozenJam-SeamlessLoop.ogg'))
@@ -413,7 +413,7 @@ while running:
 		newmob()
 		if player.shield <= 0:
 			# New Stuff 15
-			player_die_sound.play()
+			#player_die_sound.play()
 			# New Stuff 4
 			death_explosion = Explosion(player.rect.center, 'player')
 			all_sprites.add(death_explosion) #pause here and have him try it
