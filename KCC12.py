@@ -121,7 +121,7 @@ class Player(pygame.sprite.Sprite):
 	def update(self):
 		# NEW STUFF 18 timeout for powerups
 		if self.power >=2 and pygame.time.get_ticks() - self.power_time > POWERUP_TIME:
-			self.pwoer -=  1
+			self.power -=  1
 			self.power_time = pygame.time.get_ticks()
 		#unhide if hidden
 		if self.hidden and pygame.time.get_ticks() - self.hide_timer > 1000:
@@ -393,8 +393,8 @@ powerup_images['gun'] = pygame.image.load(path.join(img_dir, 'bolt_gold.png')).c
 shoot_sound = pygame.mixer.Sound(path.join(snd_dir,'Laser_Shoot6.wav'))
 
 # NEW STUFF 20
-shield_sound = pygame.mixer.Sound(path.join(snd_dir,'pow4.wav'))
-power_sound = pygame.mixer.Sound(path.join(snd_dir,'pow5.wav'))
+#shield_sound = pygame.mixer.Sound(path.join(snd_dir,'pow4.wav'))
+#power_sound = pygame.mixer.Sound(path.join(snd_dir,'pow5.wav'))
 
 
 
@@ -497,14 +497,14 @@ while running:
 		if hit.type == 'shield':
 			player.shield += random.randrange(10,20)
 			# NEW STUFF 21
-			shield_sound.play()
+			#shield_sound.play()
 			if player.shield >= 100:
 				player.shield =100
 		# NEW STUFF 13
 		if hit.type == 'gun':
 			player.powerup()
 			# NEW STUFF 21
-			power_sound.play()
+			#power_sound.play()
 
 		
 	# if the player died and the explosion has finished playing
