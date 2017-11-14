@@ -21,7 +21,7 @@ class Game:
 	def new(self):
 		# start a new game
 		# NEW STUFF 11 make sure its all pg
-		all_sprites = pg.sprite.Group()
+		self.all_sprites = pg.sprite.Group()
 		#NEW STUFF 20
 		self.run()
 		#END OF NEW STUFF 20
@@ -72,7 +72,7 @@ class Game:
 # NEW STUFF 6
 g = Game()
 g.show_start_screen()
-while g.running():
+while g.running:
 	g.new()
 	g.show_go_screen()
 
