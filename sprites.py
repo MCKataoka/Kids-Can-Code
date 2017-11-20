@@ -5,11 +5,12 @@ from settings import *
 #NEW STUFF 6
 vec = pg.math.Vector2
 
-#NEW STUFF 3
+#NEW STUFF 3 THIS IS WHERE WE GOT TO!
 class Player(pg.sprite.Sprite):
 	def __init__(self):
 		pg.sprite.Sprite.__init__(self)
 		self.image = pg.Surface((30,40))
+		self.image.fill(Yellow)
 		self.rect = self.image.get_rect()
 		#NEW STUFF 5 After this one make sure it works then explain how it doesnt move well
 		self.rect.center = (width/2, height/2)
@@ -39,7 +40,7 @@ class Player(pg.sprite.Sprite):
 		# self.rect.y += self.vy
 		#NEW STUFF 11 comment 2 lines above
 		#NEW STUFF 13
-		self.acc += self.vel * Player_friction
+		self.acc += self.vel * player_friction
 		#END OF NEW STUFF 13
 		self.vel += self.acc
 		self.pos += self.vel + 0.5 * self.acc
