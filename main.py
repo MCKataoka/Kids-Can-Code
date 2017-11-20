@@ -4,7 +4,7 @@ import pygame as pg # so now you can just write pg.quit instead of pygame.quit()
 import random
 
 from settings import *
-#NEW STUFF 1
+
 from sprites import *
 
 
@@ -24,9 +24,22 @@ class Game:
 		# start a new game
 		
 		self.all_sprites = pg.sprite.Group()
-		#NEW STUFF 4
+		
 		self.player = Player()
 		self.all_sprites.add(self.player)
+		#NEW STUFF 4
+		self.platforms = pg.sprite.Group()
+		pl = Platform(0, height-40, width, 40)
+		self.all_sprites.add(p1)
+		self.platforms.add(p1)
+		self.run()
+
+		self.all_sprites.add(p1)
+		self.platforms.add(p1)
+		#NEW STUFF 6
+		p2 = Platform(width/2 - 50, height*3/4, 100, 20)
+		self.all_sprites.add(p2)
+		self.platforms.add(p2)
 		self.run()
 	
 
@@ -44,6 +57,11 @@ class Game:
 		# Game Loop - Update
 		
 		self.all_sprites.update()
+		#NEW STUFF 6
+		hits = pg.sprite.spritecollide(self.player, self.platforms, False)
+		if hits:
+			self.player.pos = hits[0].rect.top + 1
+			self.player.vel.y = 0
 
 	def events(self):
 		# Game Loop - events
