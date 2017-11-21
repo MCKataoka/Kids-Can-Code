@@ -34,7 +34,10 @@ class Player(pg.sprite.Sprite):
 		self.acc.x += self.vel.x * player_friction
 		
 		self.vel += self.acc
+
 		self.pos += self.vel + 0.5 * self.acc
+
+		self.pos += self.acc
 		
 		if self.pos.x > width:
 			self.pos.x = 0
@@ -43,7 +46,7 @@ class Player(pg.sprite.Sprite):
 
 
 		#NEW STUFF 5 comment out line bellow and use following
-		self.rect.center = self.pos
+		#self.rect.center = self.pos
 		self.rect.midbottom = self.pos
 
 #NEW STUFF 3
@@ -55,7 +58,3 @@ class Platform(pg.sprite.Sprite):
 		self.rect = self.image.get_rect()
 		self.rect.x = x
 		self.rect.y = y
-
-
-		
-		
