@@ -29,10 +29,10 @@ class Game:
 		self.all_sprites.add(self.player)
 		#NEW STUFF 4
 		self.platforms = pg.sprite.Group()
-		pl = Platform(0, height-40, width, 40)
+		p1 = Platform(0, height-40, width, 40)
 		self.all_sprites.add(p1)
 		self.platforms.add(p1)
-		self.run()
+		
 
 		self.all_sprites.add(p1)
 		self.platforms.add(p1)
@@ -60,8 +60,8 @@ class Game:
 		#NEW STUFF 6
 		hits = pg.sprite.spritecollide(self.player, self.platforms, False)
 		if hits:
-			self.player.pos = hits[0].rect.top + 1
-			self.player.vel.y = 0
+			self.player.pos.y = hits[0].rect.top + 1
+			self.player.vel.y = 0.0
 
 	def events(self):
 		# Game Loop - events
