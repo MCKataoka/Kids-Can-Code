@@ -24,12 +24,12 @@ class Game:
 		# start a new game
 		
 		self.all_sprites = pg.sprite.Group()
-		#NEW STUFF 6 add self
+		
 		self.player = Player(self)
 		self.all_sprites.add(self.player)
 		
 		self.platforms = pg.sprite.Group()
-		#NEW STUFF 10 change how platforms are made
+		
 		#p1 = Platform(0, height-40, width, 40)
 		for plat in platform_list:
 			p = Platform(*plat)
@@ -52,13 +52,28 @@ class Game:
 		# Game Loop - Update
 		
 		self.all_sprites.update()
-		#NEW STUFF 8
+		
 		#Check if player hits a platform - only if falling
 		if self.player.vel.y > 0:
 			hits = pg.sprite.spritecollide(self.player, self.platforms, False)
 			if hits:
 				self.player.pos.y = hits[0].rect.top + 1
 				self.player.vel.y = 0.0
+		#NEW STUFF 1 
+		# if player reaches top 1/4 of the screen
+		if self.player.rect.top <= height/4:
+			self.player.pos.y += abs(self.player.vel.y)
+			for plat in self.platforms:
+				plat.rect.y += abs(self.player.vel.y)
+				if plat.rect.top >= height:
+					plat.kill()
+
+		# spawn new platforms to keep same average number
+		while len(self.platforms) < 6:
+			width2 = random.randrange(50,100)
+			p = Platform(random.randrange(0,width-width2), random.randrange(-75,-30), width2, 20)
+			self.platforms.add(p)
+			self.all_sprites.add(p)
 
 	def events(self):
 		# Game Loop - events
@@ -71,7 +86,7 @@ class Game:
 				if self.playing:
 					self.playing = False
 				self.running = False
-			#NEW STUFF 3
+			
 			if event.type == pg.KEYDOWN:
 				if event.key == pg.K_SPACE:
 					self.player.jump()
