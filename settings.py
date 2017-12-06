@@ -3,15 +3,21 @@ title = "Jumpy!"
 width = 480
 height = 600
 fps = 60
+#NEW STUFF 4
+FONT_NAME = 'arial'
 
 
 #Player Properties
 Player_acc = 0.5
 player_friction = -0.12
-#NEW STUFF 1
+
 player_grav = 0.8
 
-#NEW STUFF 9
+#NEW STUFF 1
+Player_Jump = 20
+
+
+
 # Starting Platforms
 platform_list = [(0, height-40, width, 40), (width/2 - 50, height*3/4, 100, 20), 
 				(125,height-350,100,20),
