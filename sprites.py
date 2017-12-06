@@ -7,10 +7,10 @@ vec = pg.math.Vector2
 
 
 class Player(pg.sprite.Sprite):
-	#NEW STUFF 4 add game
+	
 	def __init__(self, game):
 		pg.sprite.Sprite.__init__(self)
-		#NEW STUFF 5
+		
 		self.game = game
 		self.image = pg.Surface((30,40))
 		self.image.fill(Yellow)
@@ -20,19 +20,20 @@ class Player(pg.sprite.Sprite):
 		self.pos = vec(width/2, height/2)
 		self.vel = vec(0,0)
 		self.acc = vec(0,0)
-	#NEW STUFF 7
+
 	def jump(self):
 		#jump only if stading on a platform
-		# new stuff 5
+		
 		self.rect.x += 1
 		hits = pg.sprite.spritecollide(self, self.game.platforms, False)
 		self.rect.x -=1
 		if hits:
-			self.vel.y = -20
+			#NEW STUFF 2 change to variable player_jump
+			self.vel.y = -Player_Jump
 
 
 	def update(self):
-		#NEW STUFF 2 Change the acc vector
+		
 		self.acc = vec(0,player_grav)
 		keys = pg.key.get_pressed()
 		if keys[pg.K_LEFT]:
